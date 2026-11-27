@@ -151,7 +151,7 @@ export function ChatMessages({ messages, onRetry, canRetry }: { messages: UiMess
               {!m.streaming && m.content && (
                 <div className="mt-1 flex flex-wrap items-center gap-2 pl-1">
                   <CopyButton text={m.content} />
-                  {m.usage && <span className="text-[11px] text-faint">≈ {formatUsd(m.usage.costUsd)}</span>}
+                  {m.usage && !m.usage.costUnknown && <span className="text-[11px] text-faint">≈ {formatUsd(m.usage.costUsd)}</span>}
                   <PageLinks text={m.content} />
                 </div>
               )}

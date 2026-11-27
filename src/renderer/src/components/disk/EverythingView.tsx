@@ -271,7 +271,7 @@ export function EverythingView({
       const rep = await api.ai.explainItems(items);
       setAi(rep);
       toast.success(
-        `A IA explicou ${rep.items.length} itens${rep.usedWebSearch ? " (pesquisou na internet o que não conhecia)" : ""}. Custo: ${formatUsd(rep.usage.costUsd)}.`,
+        `A IA explicou ${rep.items.length} itens${rep.usedWebSearch ? " (pesquisou na internet o que não conhecia)" : ""}. ${rep.usage.costUnknown ? '' : `Custo: ${formatUsd(rep.usage.costUsd)}.`}`,
       );
     } catch (e) {
       toast.error(errMsg(e));

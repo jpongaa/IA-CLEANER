@@ -1,6 +1,6 @@
 // Configurações do app + funções gerais do sistema (admin, abrir links, histórico).
 import type { ActionLogEntry } from './common'
-import type { AiEffort, AiModel } from './ai'
+import type { AiEffort, AiModel, AiProvider } from './ai'
 
 export interface AppSettings {
   /** Há chave da API salva E utilizável neste usuário/PC (a chave nunca volta para a interface) */
@@ -12,7 +12,14 @@ export interface AppSettings {
   apiKeyUnreadable?: boolean
   /** Motivo (PT-BR) quando apiKeyUnreadable. */
   apiKeyProblem?: string
+  /** Qual IA usar. Cada provedor tem a sua chave salva (trocar de provedor não apaga as outras). */
+  provider: AiProvider
+  /** Modelo do Claude (provedor 'anthropic') */
   model: AiModel
+  /** Modelo nos outros provedores (nome exato da API, ex.: 'gpt-5-mini') */
+  providerModel: string
+  /** Endereço da API do provedor 'custom' (https, ou http só em localhost: Ollama, LM Studio) */
+  customBaseUrl: string
   effort: AiEffort
   /** Permite a IA pesquisar na web (versões de drivers etc.) */
   webSearch: boolean
@@ -26,7 +33,10 @@ export interface AppSettings {
 
 export const DEFAULT_SETTINGS: AppSettings = {
   apiKeySet: false,
+  provider: 'anthropic',
   model: 'claude-opus-5-5',
+  providerModel: '',
+  customBaseUrl: 'http://localhost:11434/v1',
   effort: 'medium',
   webSearch: true,
   anonymizePaths: true,

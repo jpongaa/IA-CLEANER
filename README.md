@@ -16,7 +16,7 @@ Then **AI makes sense of it**: what is safe to delete, what you should **not** t
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D6?logo=windows&logoColor=white)
 ![Electron](https://img.shields.io/badge/Electron-44-47848F?logo=electron&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![AI](https://img.shields.io/badge/AI-Claude%20(Anthropic)-D97757)
+![AI](https://img.shields.io/badge/AI-Claude%20%7C%20ChatGPT%20%7C%20Gemini%20%7C%20Grok%20%7C%20local-D97757)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 </div>
@@ -53,29 +53,39 @@ Then **AI makes sense of it**: what is safe to delete, what you should **not** t
 
 Prefer to build it yourself? See [For developers](#-for-developers).
 
-## 🔑 Bring your own AI key
+## 🔑 Bring your own AI — any of the big ones
 
-IA Cleaner **ships with no API key**: everyone uses **their own Anthropic (Claude) API key** and pays only for what they use.
-Without a key, everything else still works — only the AI analyses are turned off.
+IA Cleaner **ships with no API key**: everyone plugs in **their own AI** and pays only for what they use (or nothing, with a local model).
+Without an AI, everything else still works — only the AI analyses are turned off.
 
-1. Create an account at <https://console.anthropic.com>, add credits under *Plans & Billing* and create a key under *API Keys*.
-2. In the app: **Configurações (Settings) → Chave da API (API key)** → paste the key → **Salvar chave (Save)** → **Testar conexão (Test connection)** — the test costs nothing.
-3. Pick a model:
+| Provider | Where to get a key |
+|---|---|
+| **Anthropic — Claude** *(recommended)* | [console.anthropic.com](https://console.anthropic.com/settings/keys) |
+| **OpenAI — ChatGPT** | [platform.openai.com](https://platform.openai.com/api-keys) |
+| **Google — Gemini** | [aistudio.google.com](https://aistudio.google.com/apikey) |
+| **xAI — Grok** | [console.x.ai](https://console.x.ai) |
+| **DeepSeek** | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
+| **Mistral** | [console.mistral.ai](https://console.mistral.ai/api-keys) |
+| **OpenRouter** (hundreds of models: Llama, Qwen…) | [openrouter.ai](https://openrouter.ai/keys) |
+| **Local AI** — Ollama, LM Studio or any OpenAI-compatible API | no key needed |
 
-   | Model | Best for |
-   |---|---|
-   | **Claude Opus 5.5** | Recommended — the most thorough analyses (≈ US$ 0.15 per analysis) |
-   | **Claude Sonnet 5.5** | Cheaper, still very good |
-   | **Claude Haiku 5.5** | Fastest and most economical |
+1. In the app: **Configurações (Settings) → Sua IA (Your AI)** → pick the provider.
+2. Paste your key → **Salvar chave (Save)**. Each provider keeps its own key, encrypted.
+3. Click **Carregar modelos (Load models)** and pick a model → **Testar conexão (Test connection)** — listing models and testing cost nothing.
 
-Prefer environment variables? Set `ANTHROPIC_API_KEY` before starting the app (a key saved in Settings takes priority).
+> With **Claude**, the AI can also **search the web** for things it doesn't recognize (and look up the latest drivers), and the app
+> estimates the cost of each analysis. With other providers the analysis uses the model's own knowledge, and the cost shows up
+> in your provider's dashboard.
+
+Prefer environment variables? `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `XAI_API_KEY`, `DEEPSEEK_API_KEY`,
+`MISTRAL_API_KEY`, `OPENROUTER_API_KEY` or `OPENAI_COMPAT_API_KEY` (a key saved in Settings takes priority).
 
 ## 🔒 Privacy & safety
 
 - **Your key stays on your PC**, encrypted by Windows (DPAPI), and is never shown again.
 - **Only names, sizes and specs are sent to the AI** — never the contents of your files.
   With *Anonymize paths* on, `C:\Users\<your name>` becomes `%USERPROFILE%`.
-- The AI talks **only** to the official Anthropic API (`api.anthropic.com`). No backend server, no sign-up, no telemetry.
+- The app talks **only** to the AI provider **you** choose. No backend server, no sign-up, no telemetry, no auto-updater.
 - **Deletion guard:** every deletion goes through it. It blocks Windows, Program Files, ProgramData, drive roots, your
   profile structure, installed game/program folders, pagefile/hiberfil, and junctions/symlinks.
 - **Prefetch and the Windows Installer cache are never cleaned** — deleting them makes the PC slower or breaks updates.
@@ -114,7 +124,7 @@ npx tsx --tsconfig tsconfig.node.json scripts/smoke/run.ts cleanup-guard
 Architecture, safety rules and conventions: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Stack:** Electron 44 · electron-vite · React 19 · TypeScript · Tailwind 4 · recharts · lucide-react · zod ·
-official Anthropic SDK · a C# (.NET 8) helper for fast disk scanning.
+official Anthropic SDK + any OpenAI-compatible API · a C# (.NET 8) helper for fast disk scanning.
 
 ## 🤝 Contributing
 

@@ -1,7 +1,7 @@
 # Contributing to IA Cleaner
 
 IA Cleaner is a Windows desktop app (Electron 44 + React 19 + TypeScript + Tailwind 4) that analyzes drives, safely
-cleans junk, diagnoses slowness, shows hardware (CPU-Z style) and drivers, and uses Claude (Anthropic) to recommend.
+cleans junk, diagnoses slowness, shows hardware (CPU-Z style) and drivers, and uses AI (Claude, or any OpenAI-compatible provider: ChatGPT, Gemini, Grok, local models...) to recommend.
 The **user interface is 100% Brazilian Portuguese**; the target user is a non-expert or intermediate user, often a gamer.
 
 ## Environment
@@ -39,7 +39,7 @@ The **user interface is 100% Brazilian Portuguese**; the target user is a non-ex
   `drives.ts` (getDrives), `state.ts` (getLatest/setLatest: latest results of each domain, read by the AI and the Dashboard),
   `actionLog.ts` (logAction/listActions/getAction/markUndone), `settings.ts` (getSettings, getApiKey),
   `platform.ts` (openExternal, showInExplorer, openPath, trashItem), `paths.ts` (dataDir, binPath, known.*), `store.ts`.
-- `src/main/ai/`: API client (`client.ts`), prompts, zod schemas for structured output (`schemas.ts`), validation
+- `src/main/ai/`: Claude client (`client.ts`), OpenAI-compatible providers (`compat.ts`), prompts, zod schemas for structured output (`schemas.ts`), validation
   (`validate.ts`) and anonymization (`refs.ts`).
 - **Domain modules do NOT import 'electron'** (use core/platform etc.), so they can run in tests with tsx.
 - Imports: in main, use relative paths for `core` and the `@shared/...` alias for types. In the renderer: `@shared/...`,

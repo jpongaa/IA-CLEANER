@@ -127,7 +127,7 @@ export function AiUsageLine({ usage, generatedAt, className }: { usage?: AiUsage
     parts.push(aiModelLabel(usage.model))
     parts.push(tokensText((usage.inputTokens ?? 0) + (usage.outputTokens ?? 0)))
     if (usage.webSearches) parts.push(`${usage.webSearches} busca(s) na web`)
-    parts.push(`custo estimado ${formatUsd(usage.costUsd)}`)
+    parts.push(usage.costUnknown ? 'custo no painel do provedor' : `custo estimado ${formatUsd(usage.costUsd)}`)
   }
   if (generatedAt) parts.push(`analisado ${formatRelative(generatedAt)}`)
   return <p className={clsx('text-[11px] text-faint', className)}>{parts.join(' · ')}</p>
@@ -188,7 +188,7 @@ export function AiSetupCallout({ compact, hideButton, className }: { compact?: b
         ) : (
           <>
             <p className="font-medium text-text">A IA ainda não está configurada</p>
-            {!compact && <p className="text-muted">Cole sua chave da API da Anthropic em Configurações para receber a análise inteligente. O resto do app funciona sem ela.</p>}
+            {!compact && <p className="text-muted">Escolha a sua IA (Claude, ChatGPT, Gemini...) e cole a chave em Configurações para receber a análise inteligente. O resto do app funciona sem ela.</p>}
           </>
         )}
       </div>

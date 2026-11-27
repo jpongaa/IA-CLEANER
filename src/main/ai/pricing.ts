@@ -138,6 +138,7 @@ export function sumUsage(model: string, list: AiUsage[]): AiUsage {
     total.costUsd += u.costUsd
     cacheRead += u.cacheReadTokens ?? 0
     searches += u.webSearches ?? 0
+    if (u.costUnknown) total.costUnknown = true
   }
   total.costUsd = Math.round(total.costUsd * 1e6) / 1e6
   if (cacheRead) total.cacheReadTokens = cacheRead

@@ -187,7 +187,7 @@ export function ContextPanel({
             {aiModelLabel(status?.model)}
           </button>
         </div>
-        <p className="text-[11.5px] text-faint">Valores estimados pelo preço de tabela da Anthropic; a cobrança real aparece no Console da Anthropic.</p>
+        <p className="text-[11.5px] text-faint">Valores estimados pelo preço de tabela do Claude; a cobrança real (e o custo dos outros provedores) aparece no painel do provedor da IA.</p>
       </Card>
     </div>
   )

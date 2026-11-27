@@ -33,7 +33,7 @@ export function UsageCard({ totals }: { totals: { inputTokens: number; outputTok
               { label: 'Tokens de saída', value: formatNumber(totals.outputTokens) }
             ]}
           />
-          <p className="mt-2 text-[11.5px] text-faint">A cobrança oficial fica no Console da Anthropic (Usage/Billing).</p>
+          <p className="mt-2 text-[11.5px] text-faint">Custo estimado só para o Claude. A cobrança oficial fica no painel do provedor da IA.</p>
         </>
       )}
     </Card>
@@ -59,7 +59,7 @@ const NOT_SENT = [
 export function PrivacyCard() {
   return (
     <Card title="Privacidade: o que vai para a IA" icon={Lock}>
-      <p className="text-[12.5px] text-muted">Só quando você clica em "Analisar com IA" ou conversa com o Assistente, o app envia à API da Anthropic um resumo do PC:</p>
+      <p className="text-[12.5px] text-muted">Só quando você clica em "Analisar com IA" ou conversa com o Assistente, o app envia à API da IA que você escolheu um resumo do PC:</p>
       <ul className="mt-2 space-y-1.5 text-[12.5px]">
         {SENT.map((s) => (
           <li key={s} className="flex items-start gap-2">

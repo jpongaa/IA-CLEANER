@@ -255,7 +255,7 @@ const AI_REPORTS: AiReports = {
   }
 }
 
-const AI_STATUS: AiStatus = { configured: true, source: 'settings', model: 'claude-opus-5-5', webSearch: true }
+const AI_STATUS: AiStatus = { configured: true, source: 'settings', model: 'claude-opus-5-5', provider: 'anthropic', webSearch: true }
 
 const HARDWARE: HardwareInfo = {
   collectedAt: iso(3_600_000),

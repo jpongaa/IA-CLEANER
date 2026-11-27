@@ -16,7 +16,7 @@ e o que realmente está deixando o seu PC lento.
 ![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D6?logo=windows&logoColor=white)
 ![Electron](https://img.shields.io/badge/Electron-44-47848F?logo=electron&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![IA](https://img.shields.io/badge/IA-Claude%20(Anthropic)-D97757)
+![IA](https://img.shields.io/badge/IA-Claude%20%7C%20ChatGPT%20%7C%20Gemini%20%7C%20Grok%20%7C%20local-D97757)
 ![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-green)
 
 </div>
@@ -51,30 +51,38 @@ e o que realmente está deixando o seu PC lento.
 
 Prefere compilar você mesmo? Veja [Para desenvolvedores](#-para-desenvolvedores).
 
-## 🔑 Conecte a sua própria IA
+## 🔑 Conecte a sua própria IA — qualquer uma das famosas
 
-O IA Cleaner **não vem com chave nenhuma**: cada pessoa usa a **sua própria chave da API** da Anthropic (Claude) e paga
-só o que usar. Sem chave, todo o resto do app funciona normalmente — só as análises com IA ficam desligadas.
+O IA Cleaner **não vem com chave nenhuma**: cada pessoa conecta **a sua própria IA** e paga só o que usar (ou nada, com IA local).
+Sem IA, todo o resto do app funciona normalmente — só as análises com IA ficam desligadas.
 
-1. Crie uma conta em <https://console.anthropic.com>, adicione créditos em *Plans & Billing* e gere uma chave em *API Keys*.
-2. No app: **Configurações → Chave da API** → cole a chave → **Salvar chave** → **Testar conexão** (o teste não gasta créditos).
-3. Escolha o modelo:
+| Provedor | Onde pegar a chave |
+|---|---|
+| **Anthropic — Claude** *(recomendado)* | [console.anthropic.com](https://console.anthropic.com/settings/keys) |
+| **OpenAI — ChatGPT** | [platform.openai.com](https://platform.openai.com/api-keys) |
+| **Google — Gemini** | [aistudio.google.com](https://aistudio.google.com/apikey) |
+| **xAI — Grok** | [console.x.ai](https://console.x.ai) |
+| **DeepSeek** | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
+| **Mistral** | [console.mistral.ai](https://console.mistral.ai/api-keys) |
+| **OpenRouter** (centenas de modelos: Llama, Qwen…) | [openrouter.ai](https://openrouter.ai/keys) |
+| **IA local** — Ollama, LM Studio ou qualquer API compatível com OpenAI | não precisa de chave |
 
-   | Modelo | Para quê |
-   |---|---|
-   | **Claude Opus 5.5** | Recomendado — análises mais completas (≈ US$ 0,15 por análise) |
-   | **Claude Sonnet 5.5** | Mais barato, ainda muito bom |
-   | **Claude Haiku 5.5** | Mais rápido e econômico |
+1. No app: **Configurações → Sua IA** → escolha o provedor.
+2. Cole a chave → **Salvar chave**. Cada provedor guarda a sua própria chave, criptografada.
+3. Clique em **Carregar modelos**, escolha um modelo → **Testar conexão** (listar modelos e testar não gastam créditos).
 
-Alternativa para quem prefere variável de ambiente: defina `ANTHROPIC_API_KEY` antes de abrir o app
-(a chave salva nas Configurações tem prioridade).
+> Com o **Claude**, a IA também **pesquisa na internet** o que não conhece (e as versões de drivers), e o app estima o custo de
+> cada análise. Nos outros provedores a análise usa o conhecimento do próprio modelo, e o custo aparece no painel do provedor.
+
+Prefere variável de ambiente? `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`, `XAI_API_KEY`, `DEEPSEEK_API_KEY`,
+`MISTRAL_API_KEY`, `OPENROUTER_API_KEY` ou `OPENAI_COMPAT_API_KEY` (a chave salva nas Configurações tem prioridade).
 
 ## 🔒 Privacidade e segurança
 
 - **A chave fica no seu PC**, criptografada pelo Windows (DPAPI), e nunca volta para a tela.
 - **Para a IA vão só nomes, tamanhos e especificações** — nunca o conteúdo dos seus arquivos.
   Com *Anonimizar caminhos* ligado, `C:\Users\<seu nome>` vira `%USERPROFILE%`.
-- A IA fala **só** com a API oficial da Anthropic (`api.anthropic.com`). Não há servidor próprio, cadastro ou telemetria.
+- O app fala **só** com a IA que **você** escolheu. Não há servidor próprio, cadastro, telemetria nem atualizador automático.
 - **Guard de exclusão:** toda exclusão passa por ele, que bloqueia Windows, Arquivos de Programas, ProgramData, raízes
   de unidades, a estrutura do seu perfil, pastas de jogos/programas instalados, pagefile/hiberfil e junctions/links.
 - **Prefetch e cache do Windows Installer nunca são limpos** — apagar esses deixa o PC mais lento ou quebra atualizações.
@@ -113,7 +121,7 @@ npx tsx --tsconfig tsconfig.node.json scripts/smoke/run.ts cleanup-guard
 Arquitetura, regras de segurança e convenções: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Stack:** Electron 44 · electron-vite · React 19 · TypeScript · Tailwind 4 · recharts · lucide-react · zod ·
-SDK oficial da Anthropic · helper em C# (.NET 8) para varrer discos rápido.
+SDK oficial da Anthropic + qualquer API compatível com OpenAI · helper em C# (.NET 8) para varrer discos rápido.
 
 ## 🤝 Contribuindo
 

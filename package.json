@@ -1,8 +1,8 @@
 {
   "name": "iacleaner",
   "productName": "IA Cleaner",
-  "version": "1.0.0",
-  "description": "Limpeza, diagnóstico e otimização inteligente do PC com IA (Claude)",
+  "version": "1.1.0",
+  "description": "Limpeza, diagnóstico e otimização inteligente do PC com IA (Claude, ChatGPT, Gemini e outras)",
   "main": "./out/main/index.js",
   "author": "JPV",
   "license": "MIT",
