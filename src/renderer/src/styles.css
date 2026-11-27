@@ -1,0 +1,151 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0b0f17;
+  --color-surface: #111723;
+  --color-surface-2: #172031;
+  --color-surface-3: #1e293d;
+  --color-border: #253149;
+  --color-border-strong: #33415e;
+  --color-text: #e6ebf3;
+  --color-muted: #93a1b8;
+  --color-faint: #64748b;
+  --color-accent: #22d3ee;
+  --color-accent-strong: #06b6d4;
+  --color-ai: #a78bfa;
+  --color-ai-strong: #8b5cf6;
+  --color-ok: #34d399;
+  --color-warn: #fbbf24;
+  --color-danger: #f87171;
+  --color-info: #60a5fa;
+  --font-sans: 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Consolas', ui-monospace, monospace;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    overflow: hidden;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 35%, transparent);
+  }
+  input,
+  textarea,
+  .selectable {
+    user-select: text;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-border-strong);
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .drag-region {
+    -webkit-app-region: drag;
+  }
+  .no-drag {
+    -webkit-app-region: no-drag;
+  }
+  /* Tabela padrão do app: <table className="tbl"> */
+  .tbl {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+  }
+  .tbl th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--color-surface-2);
+    color: var(--color-muted);
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+  }
+  .tbl td {
+    padding: 8px 10px;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-border) 60%, transparent);
+    vertical-align: middle;
+  }
+  .tbl tbody tr:hover td {
+    background: color-mix(in oklab, var(--color-surface-3) 45%, transparent);
+  }
+  .tbl td.num,
+  .tbl th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .input {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    color: var(--color-text);
+    outline: none;
+    font-size: 13px;
+  }
+  .input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 20%, transparent);
+  }
+  .ai-glow {
+    background:
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      linear-gradient(135deg, var(--color-ai), var(--color-accent)) border-box;
+    border: 1px solid transparent;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface-2) 0px, var(--color-surface-3) 120px, var(--color-surface-2) 240px);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
+}
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+.progress-indeterminate {
+  animation: indeterminate 1.3s infinite ease-in-out;
+}

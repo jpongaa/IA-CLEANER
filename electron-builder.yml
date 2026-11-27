@@ -1,0 +1,32 @@
+appId: com.jpv.iacleaner
+productName: IA Cleaner
+directories:
+  buildResources: build
+  output: dist
+files:
+  - out/**
+  - package.json
+  - "!**/*.map"
+extraResources:
+  - from: resources/bin
+    to: bin
+    filter:
+      - "**/*"
+asar: true
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  icon: build/icon.png
+  requestedExecutionLevel: asInvoker
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: IA Cleaner
+  artifactName: IA-Cleaner-Setup-${version}.${ext}
+portable:
+  artifactName: IA-Cleaner-Portable-${version}.${ext}

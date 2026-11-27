@@ -1,0 +1,16 @@
+node_modules/
+out/
+out-*/
+dist/
+resources/bin/
+native/scanner/bin/
+native/scanner/obj/
+*.tsbuildinfo
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+
+# segredos e logs locais (a chave da API fica no app, criptografada — nunca no repositório)
+.env
+.env.*
+*.log

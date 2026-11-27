@@ -1,0 +1,45 @@
+{
+  "name": "iacleaner",
+  "productName": "IA Cleaner",
+  "version": "1.0.0",
+  "description": "Limpeza, diagnóstico e otimização inteligente do PC com IA (Claude)",
+  "main": "./out/main/index.js",
+  "author": "JPV",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "npm run typecheck && electron-vite build",
+    "build:scanner": "dotnet publish native/scanner/Scanner.csproj -c Release -o resources/bin",
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json",
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json",
+    "start": "electron-vite preview",
+    "smoke": "tsx --tsconfig tsconfig.node.json scripts/smoke/run.ts",
+    "dist": "npm run build:scanner && npm run build && electron-builder --win --config electron-builder.yml"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.137.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "clsx": "^2.1.1",
+    "electron": "^44.9.3",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^6.0.0",
+    "lucide-react": "^1.60.0",
+    "playwright-core": "^1.64.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "recharts": "^3.10.1",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.4"
+  }
+}
