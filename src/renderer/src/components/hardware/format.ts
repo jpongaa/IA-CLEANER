@@ -1,6 +1,6 @@
 // Formatação específica da página Hardware (PT-BR).
 import type { HardwareInfo, PhysicalDiskInfo } from '@shared/types/hardware'
-import { formatBytes, formatNumber, formatRelative } from '@shared/format'
+import { formatBytes, formatNumber, formatRelative, getFormatLocale } from '@shared/format'
 import type { Tone } from '../ui'
 
 export const SERIES = {
@@ -11,7 +11,7 @@ export const SERIES = {
 
 export function fmtMhz(mhz: number | undefined | null): string {
   if (!mhz) return '—'
-  return mhz >= 1000 ? `${(mhz / 1000).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} GHz` : `${Math.round(mhz)} MHz`
+  return mhz >= 1000 ? `${(mhz / 1000).toLocaleString(getFormatLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 })} GHz` : `${Math.round(mhz)} MHz`
 }
 
 export function fmtRate(bps: number | undefined | null): string {
@@ -28,7 +28,7 @@ export function fmtBits(bps: number | undefined | null): string {
 
 export function fmtPct(n: number | undefined | null, digits = 0): string {
   if (n === undefined || n === null || !Number.isFinite(n)) return '—'
-  return `${n.toLocaleString('pt-BR', { maximumFractionDigits: digits })}%`
+  return `${n.toLocaleString(getFormatLocale(), { maximumFractionDigits: digits })}%`
 }
 
 /** 'AAAA-MM-DD' ou ISO -> 'DD/MM/AAAA' sem deslocamento de fuso. */
@@ -37,7 +37,7 @@ export function fmtDay(value: string | undefined | null): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(value)
   if (m && value.length === 10) return `${m[3]}/${m[2]}/${m[1]}`
   const d = new Date(value)
-  return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString('pt-BR')
+  return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString(getFormatLocale())
 }
 
 export function fmtDayRelative(value: string | undefined | null): string {

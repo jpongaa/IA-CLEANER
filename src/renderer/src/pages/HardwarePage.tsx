@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Activity, CircuitBoard, Copy, Cpu, Gpu, HardDrive, Lightbulb, MemoryStick, Monitor, MonitorCog, RefreshCw, type LucideIcon } from 'lucide-react'
 import type { HardwareInfo, HardwareInsight } from '@shared/types/hardware'
-import { formatBytes, formatDate } from '@shared/format'
+import { formatBytes, formatDate, getFormatLocale } from '@shared/format'
 import { Button, Card, ErrorBox, PageHeader, Skeleton, Spinner, Tabs, useToast, type TabItem } from '../components/ui'
 import { api, errMsg } from '../lib/api'
 import BoardTab from '../components/hardware/BoardTab'
@@ -191,7 +191,7 @@ export default function HardwarePage() {
         icon={Cpu}
         description={
           info
-            ? `Tudo sobre as peças do seu PC, como no CPU-Z — explicado em português. Coletado em ${formatDate(info.collectedAt, true)}${info.durationMs ? ` (${(info.durationMs / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} s)` : ''}.`
+            ? `Tudo sobre as peças do seu PC, como no CPU-Z — explicado em português. Coletado em ${formatDate(info.collectedAt, true)}${info.durationMs ? ` (${(info.durationMs / 1000).toLocaleString(getFormatLocale(), { maximumFractionDigits: 1 })} s)` : ''}.`
             : 'Tudo sobre as peças do seu PC, como no CPU-Z — explicado em português.'
         }
         actions={

@@ -5,6 +5,7 @@ import { useMemo, useState, type ReactNode } from 'react'
 import { ChevronDown, Search, X } from 'lucide-react'
 import type { RepairItem } from '@shared/types/repair'
 import { Checkbox } from '../ui'
+import { getFormatLocale } from '@shared/format'
 
 const PREVIEW = 6
 /** A partir daqui: busca e (se houver grupos) agrupamento. */
@@ -52,7 +53,7 @@ function Paged({ items, render }: { items: RepairItem[]; render: (i: RepairItem)
       <ul className="divide-y divide-border/40">{items.slice(0, n).map(render)}</ul>
       {items.length > n && (
         <button type="button" onClick={() => setN(n + PAGE)} className="w-full border-t border-border/50 px-3 py-1.5 text-left text-[12px] font-medium text-accent hover:bg-surface-3">
-          Mostrar mais {Math.min(PAGE, items.length - n)} (de {items.length.toLocaleString('pt-BR')})
+          Mostrar mais {Math.min(PAGE, items.length - n)} (de {items.length.toLocaleString(getFormatLocale())})
         </button>
       )}
     </>
@@ -122,14 +123,14 @@ export function ItemsList({
     <div className="mt-3 rounded-lg border border-border bg-surface-2/50">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/70 px-3 py-2">
         <span className="text-[12px] font-semibold tracking-wide text-muted uppercase">
-          Itens afetados ({items.length.toLocaleString('pt-BR')})
-          {grouped && <span className="ml-1 font-normal tracking-normal normal-case">em {groups.length.toLocaleString('pt-BR')} grupos</span>}
+          Itens afetados ({items.length.toLocaleString(getFormatLocale())})
+          {grouped && <span className="ml-1 font-normal tracking-normal normal-case">em {groups.length.toLocaleString(getFormatLocale())} grupos</span>}
           {selectable && (
             <span className={clsx('ml-2 font-normal tracking-normal normal-case', selected.length ? 'text-accent' : 'text-muted')}>
               {selected.length === items.length
                 ? 'todos selecionados'
                 : selected.length
-                  ? `${selected.length.toLocaleString('pt-BR')} de ${items.length.toLocaleString('pt-BR')} selecionados`
+                  ? `${selected.length.toLocaleString(getFormatLocale())} de ${items.length.toLocaleString(getFormatLocale())} selecionados`
                   : 'nenhum selecionado'}
             </span>
           )}
@@ -179,8 +180,8 @@ export function ItemsList({
                   <button type="button" onClick={() => setOpen({ ...open, [name]: !isOpen })} className="flex min-w-0 flex-1 items-center justify-between gap-2 text-left" aria-expanded={isOpen}>
                     <span className={clsx('truncate text-[13px] font-medium', /^suspeit/i.test(name) && 'text-danger')}>{name}</span>
                     <span className="flex shrink-0 items-center gap-2 text-[12px] text-muted tabular-nums">
-                      {selectable && nSel !== list.length && <span>{nSel.toLocaleString('pt-BR')} de</span>}
-                      {list.length.toLocaleString('pt-BR')} {list.length === 1 ? 'item' : 'itens'}
+                      {selectable && nSel !== list.length && <span>{nSel.toLocaleString(getFormatLocale())} de</span>}
+                      {list.length.toLocaleString(getFormatLocale())} {list.length === 1 ? 'item' : 'itens'}
                       <ChevronDown className={clsx('size-3.5 transition-transform', isOpen && 'rotate-180')} />
                     </span>
                   </button>
@@ -202,7 +203,7 @@ export function ItemsList({
 
       {!large && items.length > PREVIEW && (
         <button type="button" onClick={() => setShowAll(!showAll)} className="w-full border-t border-border/70 px-3 py-1.5 text-left text-[12px] font-medium text-accent hover:bg-surface-3">
-          {showAll ? 'Mostrar menos' : `Mostrar todos os ${items.length.toLocaleString('pt-BR')} itens`}
+          {showAll ? 'Mostrar menos' : `Mostrar todos os ${items.length.toLocaleString(getFormatLocale())} itens`}
         </button>
       )}
     </div>

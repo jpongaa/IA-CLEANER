@@ -15,6 +15,7 @@ import {
 import type { Severity } from '@shared/types/common'
 import type { RepairCategory, RepairCheck, RepairFix, RepairIssue, RepairReport } from '@shared/types/repair'
 import { severityInfo, type Tone } from '../ui'
+import { getFormatLocale } from '@shared/format'
 
 export interface CategoryMeta {
   /** Nome completo (títulos de seção) */
@@ -238,7 +239,7 @@ export function needsAdmin(c: RepairCheck): boolean {
 }
 
 export function plural(n: number, one: string, many: string): string {
-  return `${n.toLocaleString('pt-BR')} ${n === 1 ? one : many}`
+  return `${n.toLocaleString(getFormatLocale())} ${n === 1 ? one : many}`
 }
 
 /** "12:05" ou "1:02:05" */

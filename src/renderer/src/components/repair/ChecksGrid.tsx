@@ -2,7 +2,7 @@
 // e o que foi pulado, com o motivo).
 import clsx from 'clsx'
 import { CircleAlert, CircleCheck, CircleMinus, CircleX, ListChecks, type LucideIcon } from 'lucide-react'
-import { formatDate } from '@shared/format'
+import { formatDate, getFormatLocale } from '@shared/format'
 import type { RepairCheck, RepairReport } from '@shared/types/repair'
 import { Card, toneTextClass } from '../ui'
 import { anchorId, categoryMeta, categoryStatus, countChecks, plural, reportCategories } from './meta'
@@ -36,7 +36,7 @@ function CheckRow({ c, carriedAt }: { c: RepairCheck; carriedAt?: string | null 
               className="ml-1.5 inline-block rounded border border-border px-1 py-px align-middle text-[10.5px] font-medium whitespace-nowrap text-faint"
               title={carriedAt ? `Resultado da verificação completa de ${formatDate(carriedAt, true)}` : 'Só a verificação completa (com administrador) olha isto'}
             >
-              {carriedAt ? `completa ${new Date(carriedAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}` : 'completa'}
+              {carriedAt ? `completa ${new Date(carriedAt).toLocaleDateString(getFormatLocale(), { day: '2-digit', month: '2-digit' })}` : 'completa'}
             </span>
           )}
         </span>

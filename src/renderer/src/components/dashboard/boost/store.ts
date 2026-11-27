@@ -10,6 +10,7 @@ import type { DiscoverReport } from '@shared/types/discover'
 import type { EventName } from '@shared/events'
 import { api, errMsg } from '../../../lib/api'
 import { isNotImplemented } from '../insights'
+import { getFormatLocale } from '@shared/format'
 import {
   buildPlanView,
   clearReminder,
@@ -214,8 +215,18 @@ const NOT_AVAILABLE = 'Ainda não disponível nesta versão'
 // ------------------------------------------------------------------ 1) medir antes
 
 async function measure(which: 'before' | 'after', label: string): Promise<void> {
-  patchSlot(which, { m: undefined, approx: false }, { status: 'running', startedAt: Date.now(), message: undefined, percent: undefined, error: undefined, note: undefined })
-  const unsub = listen('perf:progress', progressTo((p) => patchSlot(which, {}, p), () => state[which].task))
+  patchSlot(
+    which,
+    { m: undefined, approx: false },
+    { status: 'running', startedAt: Date.now(), message: undefined, percent: undefined, error: undefined, note: undefined }
+  )
+  const unsub = listen(
+    'perf:progress',
+    progressTo(
+      (p) => patchSlot(which, {}, p),
+      () => state[which].task
+    )
+  )
   try {
     const m = await api.performance.measure(label)
     patchSlot(which, { m, approx: false }, { status: 'done', finishedAt: Date.now(), percent: 100 })
@@ -229,7 +240,9 @@ async function measure(which: 'before' | 'after', label: string): Promise<void> 
         {
           status: 'skipped',
           finishedAt: Date.now(),
-          note: isNotImplemented(msg) ? 'Medição detalhada indisponível nesta versão: vamos comparar pelo diagnóstico.' : `A medição falhou (${msg}). Vamos comparar pelo diagnóstico.`
+          note: isNotImplemented(msg)
+            ? 'Medição detalhada indisponível nesta versão: vamos comparar pelo diagnóstico.'
+            : `A medição falhou (${msg}). Vamos comparar pelo diagnóstico.`
         }
       )
     } else {
@@ -242,8 +255,18 @@ async function measure(which: 'before' | 'after', label: string): Promise<void> 
 
 /** Medição aproximada "Depois": nova coleta do diagnóstico (somente leitura). */
 async function measureAfterApprox(): Promise<void> {
-  patchSlot('after', { m: undefined, approx: true }, { status: 'running', startedAt: Date.now(), message: 'Refazendo o diagnóstico…', percent: undefined, error: undefined })
-  const unsub = listen('perf:progress', progressTo((p) => patchSlot('after', {}, p), () => state.after.task))
+  patchSlot(
+    'after',
+    { m: undefined, approx: true },
+    { status: 'running', startedAt: Date.now(), message: 'Refazendo o diagnóstico…', percent: undefined, error: undefined }
+  )
+  const unsub = listen(
+    'perf:progress',
+    progressTo(
+      (p) => patchSlot('after', {}, p),
+      () => state.after.task
+    )
+  )
   try {
     const snap = await api.performance.collect()
     setState((s) => ({ ...s, data: { ...s.data, snapshot: snap } }))
@@ -273,9 +296,27 @@ async function runAnalysisTask(id: AnalysisId, fn: () => Promise<string | void>)
 async function runAnalysis(): Promise<void> {
   setState((s) => ({ ...s, stage: 'analyzing', analysis: freshAnalysis(), data: {}, view: undefined, selected: {}, planBuiltAt: undefined }))
   const unsubs = [
-    listen('perf:progress', progressTo((p) => patchAnalysis('performance', p), () => state.analysis.performance)),
-    listen('cleanup:progress', progressTo((p) => patchAnalysis('cleanup', p), () => state.analysis.cleanup)),
-    listen('repair:progress', progressTo((p) => patchAnalysis('repair', p), () => state.analysis.repair))
+    listen(
+      'perf:progress',
+      progressTo(
+        (p) => patchAnalysis('performance', p),
+        () => state.analysis.performance
+      )
+    ),
+    listen(
+      'cleanup:progress',
+      progressTo(
+        (p) => patchAnalysis('cleanup', p),
+        () => state.analysis.cleanup
+      )
+    ),
+    listen(
+      'repair:progress',
+      progressTo(
+        (p) => patchAnalysis('repair', p),
+        () => state.analysis.repair
+      )
+    )
   ]
   try {
     // As quatro análises são independentes e só leem: rodam juntas para o usuário esperar menos.
@@ -450,10 +491,26 @@ export async function applyPlan(opts: { withoutRestorePoint?: boolean } = {}): P
   const unsubs = [
     listen('perf:progress', (p) => {
       const id: ApplyId | null = state.apply.tasks.perf.status === 'running' ? 'perf' : state.apply.tasks.restore.status === 'running' ? 'restore' : null
-      if (id) progressTo((x) => patchApply(id, x), () => state.apply.tasks[id])(p)
+      if (id)
+        progressTo(
+          (x) => patchApply(id, x),
+          () => state.apply.tasks[id]
+        )(p)
     }),
-    listen('repair:progress', progressTo((p) => patchApply('repair', p), () => state.apply.tasks.repair)),
-    listen('cleanup:progress', progressTo((p) => patchApply('cleanup', p), () => state.apply.tasks.cleanup))
+    listen(
+      'repair:progress',
+      progressTo(
+        (p) => patchApply('repair', p),
+        () => state.apply.tasks.repair
+      )
+    ),
+    listen(
+      'cleanup:progress',
+      progressTo(
+        (p) => patchApply('cleanup', p),
+        () => state.apply.tasks.cleanup
+      )
+    )
   ]
 
   try {
@@ -477,7 +534,10 @@ export async function applyPlan(opts: { withoutRestorePoint?: boolean } = {}): P
         if (restore) patchApply('restore', { status: 'error', finishedAt: Date.now(), error: 'Não foi criado (a etapa não rodou).' })
         patchApply('perf', { status: 'error', finishedAt: Date.now(), error: text })
         if (restore) {
-          stop(`As otimizações não puderam ser aplicadas e o ponto de restauração não foi criado: ${text} Para não mexer no PC sem a rede de segurança, paramos aqui.`, true)
+          stop(
+            `As otimizações não puderam ser aplicadas e o ponto de restauração não foi criado: ${text} Para não mexer no PC sem a rede de segurança, paramos aqui.`,
+            true
+          )
           return
         }
       }
@@ -487,7 +547,8 @@ export async function applyPlan(opts: { withoutRestorePoint?: boolean } = {}): P
         if (restore) {
           const rp = batch.restorePoint
           if (rp?.ok) patchApply('restore', { status: 'done', finishedAt: Date.now(), note: rp.message })
-          else if (rp?.cancelled || batch.cancelled) patchApply('restore', { status: 'skipped', finishedAt: Date.now(), note: 'Permissão de administrador negada' })
+          else if (rp?.cancelled || batch.cancelled)
+            patchApply('restore', { status: 'skipped', finishedAt: Date.now(), note: 'Permissão de administrador negada' })
           else {
             const err = rp?.message || 'O Windows não confirmou a criação do ponto de restauração.'
             setState((s) => ({ ...s, apply: { ...s.apply, restoreError: err } }))
@@ -536,7 +597,12 @@ export async function applyPlan(opts: { withoutRestorePoint?: boolean } = {}): P
       }
       if (rp.ok) patchApply('restore', { status: 'done', finishedAt: Date.now(), note: rp.message })
       else {
-        patchApply('restore', { status: rp.cancelled ? 'skipped' : 'error', finishedAt: Date.now(), error: rp.cancelled ? undefined : rp.message, note: rp.cancelled ? 'Permissão de administrador negada' : undefined })
+        patchApply('restore', {
+          status: rp.cancelled ? 'skipped' : 'error',
+          finishedAt: Date.now(),
+          error: rp.cancelled ? undefined : rp.message,
+          note: rp.cancelled ? 'Permissão de administrador negada' : undefined
+        })
         setState((s) => ({ ...s, apply: { ...s.apply, restoreError: rp.message } }))
         stop(
           rp.cancelled
@@ -571,7 +637,9 @@ export async function applyPlan(opts: { withoutRestorePoint?: boolean } = {}): P
         patchApply('repair', {
           status: ok ? 'done' : 'skipped',
           finishedAt: Date.now(),
-          note: ok ? `${ok} de ${res.length} corrigidos · permissão de administrador negada para as demais` : 'Permissão de administrador negada: nada foi corrigido'
+          note: ok
+            ? `${ok} de ${res.length} corrigidos · permissão de administrador negada para as demais`
+            : 'Permissão de administrador negada: nada foi corrigido'
         })
         stop(
           `Você negou a permissão de administrador (UAC) para as correções de erros. ${
@@ -608,7 +676,9 @@ export async function applyPlan(opts: { withoutRestorePoint?: boolean } = {}): P
           status: report.cancelled ? 'skipped' : failed && failed === results.length ? 'error' : 'done',
           finishedAt: Date.now(),
           percent: 100,
-          note: report.cancelled ? 'Cancelada' : `Liberados ${formatBytesShort(report.totalFreed)}${report.adminDenied ? ' · itens do sistema pulados (permissão negada)' : ''}`,
+          note: report.cancelled
+            ? 'Cancelada'
+            : `Liberados ${formatBytesShort(report.totalFreed)}${report.adminDenied ? ' · itens do sistema pulados (permissão negada)' : ''}`,
           error: failed && failed === results.length ? 'Nenhum item pôde ser limpo' : undefined
         })
       } catch (e) {
@@ -715,7 +785,7 @@ function formatBytesShort(n: number | undefined): string {
     v /= 1024
     u++
   }
-  return `${v.toLocaleString('pt-BR', { maximumFractionDigits: v >= 100 || u === 0 ? 0 : 1 })} ${units[u]}`
+  return `${v.toLocaleString(getFormatLocale(), { maximumFractionDigits: v >= 100 || u === 0 ? 0 : 1 })} ${units[u]}`
 }
 
 async function measureAfter(): Promise<void> {

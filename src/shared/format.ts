@@ -1,4 +1,13 @@
-// Formatação compartilhada (main e renderer). Sempre PT-BR.
+// Formatação compartilhada (main e renderer). PT-BR por padrão; a interface troca com setFormatLocale().
+
+let LOCALE = 'pt-BR'
+/** Idioma dos números/datas formatados (a interface chama ao trocar de idioma; o main fica em PT-BR). */
+export function setFormatLocale(locale: string): void {
+  LOCALE = locale
+}
+export function getFormatLocale(): string {
+  return LOCALE
+}
 
 const UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 
@@ -13,17 +22,17 @@ export function formatBytes(bytes: number | undefined | null, decimals = 1): str
     unit++
   }
   const digits = unit === 0 ? 0 : value >= 100 ? 0 : decimals
-  return `${sign}${value.toLocaleString('pt-BR', { minimumFractionDigits: digits, maximumFractionDigits: digits })} ${UNITS[unit]}`
+  return `${sign}${value.toLocaleString(LOCALE, { minimumFractionDigits: digits, maximumFractionDigits: digits })} ${UNITS[unit]}`
 }
 
 export function formatNumber(n: number | undefined | null, digits = 0): string {
   if (n === undefined || n === null || !Number.isFinite(n)) return '—'
-  return n.toLocaleString('pt-BR', { maximumFractionDigits: digits })
+  return n.toLocaleString(LOCALE, { maximumFractionDigits: digits })
 }
 
 export function formatPercent(n: number | undefined | null, digits = 0): string {
   if (n === undefined || n === null || !Number.isFinite(n)) return '—'
-  return `${n.toLocaleString('pt-BR', { maximumFractionDigits: digits })}%`
+  return `${n.toLocaleString(LOCALE, { maximumFractionDigits: digits })}%`
 }
 
 /** Data/hora curta PT-BR a partir de epoch ms ou ISO. */
@@ -31,9 +40,7 @@ export function formatDate(value: number | string | undefined | null, withTime =
   if (value === undefined || value === null || value === '') return '—'
   const d = typeof value === 'number' ? new Date(value) : new Date(value)
   if (Number.isNaN(d.getTime())) return '—'
-  return withTime
-    ? d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
-    : d.toLocaleDateString('pt-BR')
+  return withTime ? d.toLocaleString(LOCALE, { dateStyle: 'short', timeStyle: 'short' }) : d.toLocaleDateString(LOCALE)
 }
 
 /** "há 3 meses", "hoje", "há 2 anos". */
@@ -65,5 +72,5 @@ export function formatDuration(ms: number | undefined | null): string {
 
 export function formatUsd(v: number | undefined | null): string {
   if (v === undefined || v === null || !Number.isFinite(v)) return '—'
-  return `US$ ${v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: v < 1 ? 3 : 2 })}`
+  return `US$ ${v.toLocaleString(LOCALE, { minimumFractionDigits: 2, maximumFractionDigits: v < 1 ? 3 : 2 })}`
 }

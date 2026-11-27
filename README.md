@@ -23,7 +23,7 @@ Then **AI makes sense of it**: what is safe to delete, what you should **not** t
 
 > **The AI only recommends.** Nothing is deleted, uninstalled or changed until you confirm it on screen — and every action is logged in History.
 
-> 🇧🇷 The app's interface is in **Brazilian Portuguese**.
+> 🌍 **Languages:** English · Español · Português · 中文 — it opens in your Windows language and you can switch anytime at the top of the window. The AI answers in the language you pick.
 
 ---
 

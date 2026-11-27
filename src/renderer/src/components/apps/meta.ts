@@ -1,6 +1,7 @@
 // Metadados e utilidades da página Jogos & Programas (renderer).
 import type { DriveInfo } from '@shared/types/common'
 import type { AppsInventory, GameInfo, Launcher, ProgramInfo } from '@shared/types/apps'
+import { getFormatLocale } from '@shared/format'
 
 export const STALE_DAYS = 182
 export const DAY_MS = 86_400_000
@@ -76,7 +77,7 @@ export function formatPlaytime(min: number | undefined): string {
   if (!min || min <= 0) return '—'
   if (min < 60) return `${Math.round(min)} min`
   const h = min / 60
-  return `${h.toLocaleString('pt-BR', { maximumFractionDigits: h < 10 ? 1 : 0 })} h`
+  return `${h.toLocaleString(getFormatLocale(), { maximumFractionDigits: h < 10 ? 1 : 0 })} h`
 }
 
 /** "há 8 meses" sem o "há" para frases como "não jogado há 8 meses". */

@@ -4,6 +4,7 @@ import { Badge, Card, KeyValue } from '../ui'
 import { fmtBits, fmtDay, fmtRate } from './format'
 import { ExtLiveTag, Hint } from './parts'
 import type { LiveState } from './useLiveStats'
+import { getFormatLocale } from '@shared/format'
 
 function DisplayCard({ d }: { d: DisplayInfo }) {
   const below = d.refreshRateHz && d.maxRefreshRateHz && d.maxRefreshRateHz > d.refreshRateHz + 5
@@ -22,7 +23,7 @@ function DisplayCard({ d }: { d: DisplayInfo }) {
             value: d.refreshRateHz ? <span className={below ? 'text-warn' : undefined}>{`${d.refreshRateHz} Hz`}</span> : '—'
           },
           { label: 'Máximo nesta resolução', value: d.maxRefreshRateHz ? `${d.maxRefreshRateHz} Hz` : '—' },
-          { label: 'Tamanho (informado pelo monitor)', value: d.sizeInches ? `≈ ${d.sizeInches.toLocaleString('pt-BR')}"` : '—' },
+          { label: 'Tamanho (informado pelo monitor)', value: d.sizeInches ? `≈ ${d.sizeInches.toLocaleString(getFormatLocale())}"` : '—' },
           { label: 'Conexão', value: d.connection ?? '—' },
           { label: 'Ligado na placa', value: d.adapter ?? '—' },
           { label: 'Cores', value: d.bitsPerPixel ? `${d.bitsPerPixel} bits` : '—' }

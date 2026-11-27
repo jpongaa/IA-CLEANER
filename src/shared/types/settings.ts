@@ -2,6 +2,9 @@
 import type { ActionLogEntry } from './common'
 import type { AiEffort, AiModel, AiProvider } from './ai'
 
+/** Idioma da interface e das respostas da IA. 'auto' = o do Windows (sem tradução: inglês). */
+export type AppLanguage = 'auto' | 'pt-BR' | 'en' | 'es' | 'zh-CN'
+
 export interface AppSettings {
   /** Há chave da API salva E utilizável neste usuário/PC (a chave nunca volta para a interface) */
   apiKeySet: boolean
@@ -12,6 +15,7 @@ export interface AppSettings {
   apiKeyUnreadable?: boolean
   /** Motivo (PT-BR) quando apiKeyUnreadable. */
   apiKeyProblem?: string
+  language: AppLanguage
   /** Qual IA usar. Cada provedor tem a sua chave salva (trocar de provedor não apaga as outras). */
   provider: AiProvider
   /** Modelo do Claude (provedor 'anthropic') */
@@ -33,6 +37,7 @@ export interface AppSettings {
 
 export const DEFAULT_SETTINGS: AppSettings = {
   apiKeySet: false,
+  language: 'auto',
   provider: 'anthropic',
   model: 'claude-opus-5-5',
   providerModel: '',

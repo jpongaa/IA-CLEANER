@@ -2,7 +2,7 @@
 
 IA Cleaner is a Windows desktop app (Electron 44 + React 19 + TypeScript + Tailwind 4) that analyzes drives, safely
 cleans junk, diagnoses slowness, shows hardware (CPU-Z style) and drivers, and uses AI (Claude, or any OpenAI-compatible provider: ChatGPT, Gemini, Grok, local models...) to recommend.
-The **user interface is 100% Brazilian Portuguese**; the target user is a non-expert or intermediate user, often a gamer.
+The source strings are written in **Brazilian Portuguese** and translated at runtime to English, Spanish and Simplified Chinese (see *Translations* below); the target user is a non-expert or intermediate user, often a gamer.
 
 ## Environment
 - Windows 10/11 64-bit. The app must work on Windows in **any display language** — performance counter names and
@@ -63,7 +63,7 @@ The **user interface is 100% Brazilian Portuguese**; the target user is a non-ex
 - Inside TS template strings: watch out for backticks (PowerShell's escape character) and `${` (JS interpolation). Use `psQuote()` for values.
 
 ## User interface (renderer)
-- Everything in Brazilian Portuguese, in simple, direct language; explain the *why* (users want to understand).
+- Write UI text in Brazilian Portuguese (the source language), in simple, direct language; explain the *why* (users want to understand).
 - Use the `components/ui` kit (Button, Card, Badge, ProgressBar, StatCard, PageHeader, Tabs, Toggle, Checkbox, KeyValue,
   EmptyState, ErrorBox, Spinner, Skeleton, Modal, ConfirmDialog, useToast, VerdictBadge, SeverityBadge, RiskBadge, ImpactBadge)
   and `components/ai` (AiAnalyzeCard, AiRecommendationList). Icons: lucide-react. Charts: recharts.
@@ -83,3 +83,13 @@ The **user interface is 100% Brazilian Portuguese**; the target user is a non-ex
    127.0.0.1 and cost no credits.
 3. UI: `scripts/ui/*.ts` open the app with Playwright (`launchApp()` from `scripts/ui/harness.ts`) using sample data.
    **Never click buttons that change the PC** (Clean, Delete, Uninstall, Apply, Disable...).
+
+## Translations
+- The UI is translated at runtime by `src/renderer/src/i18n/runtime.ts`: a MutationObserver swaps each visible text (and
+  `title`/`placeholder`/`aria-label`) for its translation. It only changes text values — it never adds or removes DOM nodes.
+- Catalogs: `src/renderer/src/i18n/locales/<lang>.json` (`"Portuguese source": "translation"`). Keys with `{0}`, `{1}`... are
+  patterns for sentences with variable parts; translations must keep the same placeholders.
+- After adding or changing UI text: run `node scripts/i18n/extract.mjs` (updates `source.json`), translate the new strings into
+  `chunk-N.<en|es|zh>.json` files and run `node scripts/i18n/merge.mjs <folder>`. Missing translations simply show the Portuguese text.
+- Mark elements that must never be translated (user data, paths) with `data-no-translate`.
+- Check: `npx tsx --tsconfig tsconfig.node.json scripts/smoke/run.ts i18n` and, with a build, `scripts/ui/i18n.ts` (runs the app hidden).

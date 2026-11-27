@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { Flame, Search, ShieldCheck, Sparkles, X } from 'lucide-react'
 import type { CleanupEstimate } from '@shared/types/cleanup'
 import type { TaskProgress } from '@shared/types/common'
-import { formatBytes, formatDuration, formatRelative } from '@shared/format'
+import { formatBytes, formatDuration, formatRelative, getFormatLocale } from '@shared/format'
 import { Button, ProgressBar } from '../ui'
 
 export function CleanupHero({
@@ -67,7 +67,7 @@ export function CleanupHero({
                 <div className="h-full bg-warn transition-[width] duration-700" style={{ width: `${100 - safePct}%` }} />
               </div>
               <p className="mt-3 text-[12px] text-faint">
-                Analisado {formatRelative(estimate.scannedAt) === 'hoje' ? `hoje às ${new Date(estimate.scannedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : formatRelative(estimate.scannedAt)}
+                Analisado {formatRelative(estimate.scannedAt) === 'hoje' ? `hoje às ${new Date(estimate.scannedAt).toLocaleTimeString(getFormatLocale(), { hour: '2-digit', minute: '2-digit' })}` : formatRelative(estimate.scannedAt)}
                 {estimate.durationMs ? ` · levou ${formatDuration(estimate.durationMs)}` : ''}
                 {systemDriveFree ? (
                   <>

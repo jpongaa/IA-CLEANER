@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { ArrowRight, CircuitBoard, Cpu, Gpu, HardDrive, Lightbulb, MemoryStick, Monitor, type LucideIcon } from 'lucide-react'
 import type { HardwareInfo } from '@shared/types/hardware'
 import type { PerformanceSnapshot } from '@shared/types/performance'
-import { formatBytes } from '@shared/format'
+import { formatBytes, getFormatLocale } from '@shared/format'
 import { useNav } from '../../lib/nav'
 import { Button, Card } from '../ui'
 import { BlockError, BlockSkeleton } from './common'
@@ -29,7 +29,7 @@ function SpecRow({ icon: Icon, label, value, sub, title, right }: { icon: Lucide
 }
 
 function ghz(mhz?: number): string | null {
-  return mhz && mhz > 0 ? `${(mhz / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} GHz` : null
+  return mhz && mhz > 0 ? `${(mhz / 1000).toLocaleString(getFormatLocale(), { maximumFractionDigits: 1 })} GHz` : null
 }
 
 /** "AMD Ryzen 7 5700G with Radeon Graphics" -> "AMD Ryzen 7 5700G" */

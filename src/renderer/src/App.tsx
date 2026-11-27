@@ -16,6 +16,8 @@ import {
   Sparkles,
   type LucideIcon
 } from 'lucide-react'
+import { Globe } from 'lucide-react'
+import { LANGS, currentLanguage, resolveLang, setLanguage, type Lang } from './i18n/runtime'
 import { NavContext, type PageId } from './lib/nav'
 import { api } from './lib/api'
 import { ErrorBoundary, ToastProvider } from './components/ui'
@@ -62,10 +64,41 @@ export default function App() {
   const [info, setInfo] = useState<AppInfo | null>(null)
   const { status: ai } = useAiStatus()
   const nav = useMemo(() => ({ page, go: setPage }), [page])
+  const [lang, setLang] = useState<Lang>(currentLanguage())
 
   useEffect(() => {
-    api.system.getAppInfo().then(setInfo).catch(() => undefined)
+    api.system
+      .getAppInfo()
+      .then(setInfo)
+      .catch(() => undefined)
+    // Idioma salvo nas configurações (o main.tsx já aplicou o da última vez, para não piscar em PT).
+    api.settings
+      .get()
+      .then((s) => {
+        const l = resolveLang(s.language)
+        try {
+          localStorage.setItem('iac-lang', s.language)
+        } catch {
+          // sem localStorage: só não lembra na próxima abertura
+        }
+        if (l !== currentLanguage()) {
+          setLanguage(l)
+          setLang(l)
+        }
+      })
+      .catch(() => undefined)
   }, [])
+
+  const changeLang = (l: Lang): void => {
+    setLanguage(l)
+    setLang(l)
+    try {
+      localStorage.setItem('iac-lang', l)
+    } catch {
+      // ignora
+    }
+    void api.settings.update({ language: l }).catch(() => undefined)
+  }
 
   // A área de conteúdo é o mesmo elemento para todas as páginas: ao trocar de página, volta ao topo
   // (antes do paint, para a página nova não aparecer "no meio").
@@ -88,6 +121,21 @@ export default function App() {
             </div>
             <span className="text-[13px] font-semibold tracking-wide">IA Cleaner</span>
             <span className="text-[11px] text-faint">v{info?.version ?? ''}</span>
+            <label className="no-drag ml-auto flex items-center gap-1.5 text-[12px] text-muted" data-no-translate>
+              <Globe className="size-3.5" />
+              <select
+                className="rounded-md border border-border bg-surface-2 px-2 py-0.5 text-[12px] text-text"
+                value={lang}
+                onChange={(e) => changeLang(e.target.value as Lang)}
+                aria-label="Language / Idioma"
+              >
+                {LANGS.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
 
           <div className="flex min-h-0 flex-1">
@@ -96,9 +144,7 @@ export default function App() {
               {(['main', 'tools', 'app'] as const).map((group) => (
                 <nav key={group} className="mb-4 space-y-0.5">
                   {group !== 'main' && (
-                    <p className="px-3 pb-1 text-[11px] font-semibold tracking-wider text-faint uppercase">
-                      {group === 'tools' ? 'Ferramentas' : 'App'}
-                    </p>
+                    <p className="px-3 pb-1 text-[11px] font-semibold tracking-wider text-faint uppercase">{group === 'tools' ? 'Ferramentas' : 'App'}</p>
                   )}
                   {NAV.filter((n) => n.group === group).map((n) => (
                     <button
@@ -119,9 +165,7 @@ export default function App() {
               <div className="mt-auto space-y-2 rounded-xl border border-border bg-surface-2 p-3 text-[12px]">
                 <div className="flex items-center gap-2">
                   <Bot className={clsx('size-4', ai?.configured ? 'text-ai' : 'text-faint')} />
-                  <span className={ai?.configured ? 'text-text' : 'text-muted'}>
-                    {ai?.configured ? 'IA conectada' : 'IA não configurada'}
-                  </span>
+                  <span className={ai?.configured ? 'text-text' : 'text-muted'}>{ai?.configured ? 'IA conectada' : 'IA não configurada'}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className={clsx('size-4', info?.isAdmin ? 'text-ok' : 'text-faint')} />
@@ -134,7 +178,7 @@ export default function App() {
             <main ref={mainRef} className="min-w-0 flex-1 overflow-y-auto">
               <div className="mx-auto max-w-[1400px] px-8 py-7">
                 {/* Um erro de renderização derruba só esta tela (key: trocar de página recomeça do zero). */}
-                <ErrorBoundary key={page} label={currentNav?.label}>
+                <ErrorBoundary key={`${page}:${lang}`} label={currentNav?.label}>
                   <Current />
                 </ErrorBoundary>
               </div>

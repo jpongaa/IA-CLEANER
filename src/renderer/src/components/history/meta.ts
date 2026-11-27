@@ -13,7 +13,7 @@ import {
   type LucideIcon
 } from 'lucide-react'
 import type { ActionLogEntry } from '@shared/types/common'
-import { formatRelative } from '@shared/format'
+import { formatRelative, getFormatLocale } from '@shared/format'
 import type { Tone } from '../ui'
 
 export type ActionDomain = ActionLogEntry['domain']
@@ -72,7 +72,7 @@ export function timeAgo(value: string | number | undefined | null, now = Date.no
 export function timeOfDay(value: string): string {
   const d = new Date(value)
   if (Number.isNaN(d.getTime())) return '—'
-  return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  return d.toLocaleTimeString(getFormatLocale(), { hour: '2-digit', minute: '2-digit' })
 }
 
 /** Qual módulo desfaz esta entrada (null = não dá para desfazer pelo app). */

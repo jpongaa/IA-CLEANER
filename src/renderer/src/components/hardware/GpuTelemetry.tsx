@@ -8,6 +8,7 @@ import { LiveArea, type SeriesDef } from './charts'
 import { fmtMhz, SERIES } from './format'
 import { gpuLiveInsights, gpuThresholds, TEMP_LEVEL_LABEL, tempLevel, throttleStatus } from './gpuRules'
 import { InsightRow, LiveTag, SubTitle } from './parts'
+import { getFormatLocale } from '@shared/format'
 
 const WARN = '#fbbf24'
 
@@ -15,8 +16,8 @@ const S_TEMP: SeriesDef[] = [{ id: 'gt', label: 'Temperatura', color: SERIES.pri
 const S_CLOCK: SeriesDef[] = [{ id: 'gc', label: 'Clock', color: SERIES.primary, get: (s) => s.gpuClockMhz }]
 
 export const fmtTemp = (c: number | undefined): string => (c === undefined ? '—' : `${Math.round(c)} °C`)
-const fmtW = (w: number | undefined): string => (w === undefined ? '—' : `${w.toLocaleString('pt-BR', { maximumFractionDigits: w < 100 ? 1 : 0 })} W`)
-const clockAxis = (v: number): string => (v === 0 ? '0' : `${(v / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 2 })} GHz`)
+const fmtW = (w: number | undefined): string => (w === undefined ? '—' : `${w.toLocaleString(getFormatLocale(), { maximumFractionDigits: w < 100 ? 1 : 0 })} W`)
+const clockAxis = (v: number): string => (v === 0 ? '0' : `${(v / 1000).toLocaleString(getFormatLocale(), { maximumFractionDigits: 2 })} GHz`)
 const tempAxis = (v: number): string => `${v} °C`
 
 /** Topo do eixo do clock: clock máximo da placa (ou maior visto), arredondado para cima em 200 MHz. */

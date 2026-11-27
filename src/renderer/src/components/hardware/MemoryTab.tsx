@@ -1,6 +1,6 @@
 import { Gauge, Layers, MemoryStick, Plus } from 'lucide-react'
 import type { HardwareInfo, RamModule } from '@shared/types/hardware'
-import { formatBytes } from '@shared/format'
+import { formatBytes, getFormatLocale } from '@shared/format'
 import { Badge, Card, KeyValue, StatCard } from '../ui'
 import { Hint, LiveTag, UsageBar } from './parts'
 import type { LiveState } from './useLiveStats'
@@ -30,7 +30,7 @@ function ModuleCard({ m }: { m: RamModule }) {
             value: m.configuredMhz ? <span className={slow ? 'text-warn' : 'text-ok'}>{m.configuredMhz} MT/s</span> : '—'
           },
           { label: 'Formato', value: m.formFactor ?? '—' },
-          { label: 'Tensão (informada pela BIOS)', value: m.voltageMv ? `${(m.voltageMv / 1000).toLocaleString('pt-BR')} V` : '—' },
+          { label: 'Tensão (informada pela BIOS)', value: m.voltageMv ? `${(m.voltageMv / 1000).toLocaleString(getFormatLocale())} V` : '—' },
           { label: 'Banco', value: m.bank ?? '—' }
         ]}
       />

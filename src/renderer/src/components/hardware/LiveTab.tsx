@@ -1,6 +1,6 @@
 import { Activity, ArrowDown, ArrowUp, Cpu, Gpu, HardDrive, MemoryStick, Network, Thermometer, type LucideIcon } from 'lucide-react'
 import type { HardwareInfo, LiveStats } from '@shared/types/hardware'
-import { formatBytes } from '@shared/format'
+import { formatBytes, getFormatLocale } from '@shared/format'
 import { Card, ErrorBox, Spinner } from '../ui'
 import { CoreBars, LiveArea, type SeriesDef } from './charts'
 import { fmtMhz, fmtPct, fmtRate, SERIES } from './format'
@@ -25,7 +25,7 @@ function Tile({ icon: Icon, label, value, sub }: { icon: LucideIcon; label: stri
 const GB = 1024 ** 3
 const pct = (v: number): string => fmtPct(v)
 const pctAxis = (v: number): string => `${v}%`
-const gb = (v: number): string => `${(v / GB).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} GB`
+const gb = (v: number): string => `${(v / GB).toLocaleString(getFormatLocale(), { maximumFractionDigits: 1 })} GB`
 const rateAxis = (v: number): string => (v === 0 ? '0' : `${formatBytes(v, 1).replace(',0 ', ' ')}/s`)
 const gbAxis = (v: number): string => (v === 0 ? '0' : gb(v))
 

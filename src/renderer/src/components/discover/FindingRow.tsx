@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { Building2, CheckCircle2, ChevronDown, CircleDashed, Clock, FolderOpen, Info, Lock, PackageCheck, PowerOff, ScanSearch, Share2, ShieldCheck, TriangleAlert } from 'lucide-react'
 import type { Finding, FindingAction, FindingItem } from '@shared/types/discover'
-import { formatBytes, formatDate, formatRelative } from '@shared/format'
+import { formatBytes, formatDate, formatRelative, getFormatLocale } from '@shared/format'
 import { Badge, Button, Checkbox, RiskBadge, VerdictBadge } from '../ui'
 import { api } from '../../lib/api'
 import { actionIcon, baseName, installBadge, kindMeta, shortPath } from './meta'
@@ -177,7 +177,7 @@ export function FindingRow({ finding: f, note, selected, onSelect, onAction, bus
 }
 
 function NoteLine({ note }: { note: FindingNote }) {
-  const time = new Date(note.at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  const time = new Date(note.at).toLocaleTimeString(getFormatLocale(), { hour: '2-digit', minute: '2-digit' })
   if (note.kind === 'uninstallerOpened')
     return (
       <p className="mt-2 flex items-start gap-1.5 rounded-lg border border-info/30 bg-info/10 px-2.5 py-1.5 text-[12px] text-text">

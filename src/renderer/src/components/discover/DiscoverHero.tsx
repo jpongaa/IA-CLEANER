@@ -4,14 +4,14 @@ import clsx from 'clsx'
 import { ScanSearch, Search, ShieldCheck, TriangleAlert, X } from 'lucide-react'
 import type { TaskProgress } from '@shared/types/common'
 import type { DiscoverReport } from '@shared/types/discover'
-import { formatBytes, formatDuration, formatRelative } from '@shared/format'
+import { formatBytes, formatDuration, formatRelative, getFormatLocale } from '@shared/format'
 import { Button, ProgressBar, Toggle } from '../ui'
 import { SEARCH_SCOPE } from './meta'
 import type { DiscoverSummary } from './logic'
 
 function scannedText(iso: string): string {
   const rel = formatRelative(iso)
-  if (rel === 'hoje') return `hoje às ${new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`
+  if (rel === 'hoje') return `hoje às ${new Date(iso).toLocaleTimeString(getFormatLocale(), { hour: '2-digit', minute: '2-digit' })}`
   return rel
 }
 

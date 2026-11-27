@@ -1,6 +1,7 @@
 // Filtros, agrupamento e totais do Histórico (lógica pura, sem React).
 import type { ActionLogEntry } from '@shared/types/common'
 import { canUndo, domainMeta, entryTime, normalizeText, type ActionDomain } from './meta'
+import { getFormatLocale } from '@shared/format'
 
 export type StatusFilter = 'all' | 'success' | 'error' | 'undone'
 export type PeriodFilter = 'all' | 'today' | '7d' | '30d' | '90d'
@@ -124,7 +125,7 @@ function dayLabel(t: number, now: number): string {
   if (t >= today - 86_400_000) return 'Ontem'
   const d = new Date(t)
   const sameYear = d.getFullYear() === new Date(now).getFullYear()
-  const s = d.toLocaleDateString('pt-BR', {
+  const s = d.toLocaleDateString(getFormatLocale(), {
     weekday: 'long',
     day: 'numeric',
     month: 'long',

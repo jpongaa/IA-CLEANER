@@ -23,6 +23,8 @@ e o que realmente está deixando o seu PC lento.
 
 > **A IA só recomenda.** Nada é apagado, desinstalado ou alterado sem você confirmar na tela — e tudo fica no Histórico.
 
+> 🌍 **Idiomas:** Português · English · Español · 中文 — o app abre no idioma do Windows e dá para trocar a qualquer momento no topo da janela. A IA responde no idioma escolhido.
+
 ---
 
 ## ✨ O que ele faz

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Activity, Clock, Cpu, Gauge, Globe, HardDrive, LayoutGrid, Layers, MemoryStick, RefreshCw, Rocket, Search, ShieldCheck, TriangleAlert, Zap } from 'lucide-react'
 import type { ActionLogEntry, TaskProgress } from '@shared/types/common'
 import type { PerformanceSnapshot } from '@shared/types/performance'
-import { formatBytes, formatDate, formatPercent, formatRelative } from '@shared/format'
+import { formatBytes, formatDate, formatPercent, formatRelative, getFormatLocale } from '@shared/format'
 import { api, errMsg, useEvent } from '../lib/api'
 import { Badge, Button, Card, EmptyState, ErrorBox, PageHeader, ProgressBar, Skeleton, StatCard, Tabs, usageTone, type TabItem } from '../components/ui'
 import { HealthGauge } from '../components/performance/HealthGauge'
@@ -127,7 +127,7 @@ export default function PerformancePage() {
         snap && (
           <>
             <span className="text-[12px] text-faint" title={formatDate(snap.collectedAt, true)}>
-              Análise de {formatRelative(snap.collectedAt) === 'hoje' ? `hoje, ${new Date(snap.collectedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : formatDate(snap.collectedAt, true)}
+              Análise de {formatRelative(snap.collectedAt) === 'hoje' ? `hoje, ${new Date(snap.collectedAt).toLocaleTimeString(getFormatLocale(), { hour: '2-digit', minute: '2-digit' })}` : formatDate(snap.collectedAt, true)}
             </span>
             <Button icon={RefreshCw} loading={collecting} onClick={() => void collect()}>
               Analisar de novo
@@ -395,7 +395,7 @@ export default function PerformancePage() {
           </ul>
         </details>
       )}
-      <p className="mt-6 text-[11px] text-faint">Coleta em {((s.collectionMs ?? 0) / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} s · {s.os.caption} {s.os.build}</p>
+      <p className="mt-6 text-[11px] text-faint">Coleta em {((s.collectionMs ?? 0) / 1000).toLocaleString(getFormatLocale(), { maximumFractionDigits: 1 })} s · {s.os.caption} {s.os.build}</p>
 
       {runner.dialog}
       <BoostDialog open={boostOpen} onClose={() => setBoostOpen(false)} actions={s.actions} onChanged={() => void reloadSnapshot()} />

@@ -51,7 +51,10 @@ function createWindow(): void {
     }
   })
 
-  mainWindow.on('ready-to-show', () => mainWindow?.show())
+  // Testes automáticos podem rodar com a janela escondida (IACLEANER_HIDDEN=1): nada aparece na tela.
+  mainWindow.on('ready-to-show', () => {
+    if (!(isUiTest && process.env.IACLEANER_HIDDEN === '1')) mainWindow?.show()
+  })
 
   // Links externos abrem no navegador padrão (só https: / ms-settings:, mesma regra do system.openExternal);
   // nada de janelas novas dentro do app.

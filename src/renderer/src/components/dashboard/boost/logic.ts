@@ -5,7 +5,7 @@ import type { DriveInfo, Impact, Risk, Severity } from '@shared/types/common'
 import type { BoostGroup, BoostPlan, PerformanceSnapshot, SpeedMeasurement } from '@shared/types/performance'
 import type { CleanupEstimate, CleanupTarget } from '@shared/types/cleanup'
 import type { RepairFix, RepairIssue, RepairReport } from '@shared/types/repair'
-import { formatBytes, formatNumber } from '@shared/format'
+import { formatBytes, formatNumber, getFormatLocale } from '@shared/format'
 
 // ------------------------------------------------------------------ plano
 
@@ -496,7 +496,7 @@ export function formatDelta(row: MetricRow): string {
 export function formatPct(pct: number | null): string {
   if (pct === null || !Number.isFinite(pct)) return ''
   const r = Math.abs(pct) >= 10 ? Math.round(Math.abs(pct)) : Math.round(Math.abs(pct) * 10) / 10
-  return `${pct > 0 ? '+' : pct < 0 ? '−' : ''}${r.toLocaleString('pt-BR')}%`
+  return `${pct > 0 ? '+' : pct < 0 ? '−' : ''}${r.toLocaleString(getFormatLocale())}%`
 }
 
 export function summarizeRows(rows: MetricRow[]): { better: number; worse: number; same: number } {

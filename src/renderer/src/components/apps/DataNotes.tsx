@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { CheckCircle2, ChevronDown, CircleMinus, Info } from 'lucide-react'
 import type { AppsInventory } from '@shared/types/apps'
-import { formatDate } from '@shared/format'
+import { formatDate, getFormatLocale } from '@shared/format'
 import { Badge } from '../ui'
 import { LauncherBadge } from './bits'
 
@@ -35,7 +35,7 @@ export function DataNotes({ inventory }: { inventory: AppsInventory }) {
         {warnings.length > 0 && <Badge tone="warn">{warnings.length === 1 ? '1 aviso' : `${warnings.length} avisos`}</Badge>}
         <span className="ml-auto text-[12px] text-faint">
           coletado em {formatDate(inventory.collectedAt, true)}
-          {inventory.durationMs ? ` · ${(inventory.durationMs / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} s` : ''}
+          {inventory.durationMs ? ` · ${(inventory.durationMs / 1000).toLocaleString(getFormatLocale(), { maximumFractionDigits: 1 })} s` : ''}
         </span>
         <ChevronDown className={clsx('size-4 transition-transform', open && 'rotate-180')} />
       </button>
